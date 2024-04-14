@@ -34,7 +34,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F1    , KC_F2    , KC_F3    , KC_F4    , KC_F5    , KC_F6    ,                                  KC_F7    , KC_F8    , KC_F9    , KC_F10   , _______  , KC_BSPC  ,
     KC_ESC   , _______  , _______  , KC_UP    , _______  , _______  ,                                  _______  , KC_BTN4  , KC_BTN3  , KC_BTN5  , _______  , KC_RBRC  ,
     _______  , _______  , KC_LEFT  , KC_DOWN  , KC_RGHT  , _______  ,                                  _______  , KC_BTN1  , SCRL_MO  , KC_BTN2  , _______  , KC_BSLS  ,
-    AML_TO   , AML_I50  , AML_D50  , SCRL_DVI , SCRL_DVD , _______  , _______               _______  , _______  , _______  , _______  , _______  , _______  , _______  ,
+    AML_TO   , AML_I50  , AML_D50  , SCRL_DVI , SCRL_DVD , _______  , _______  ,            _______  , _______  , _______  , _______  , _______  , _______  , _______  ,
     KBC_SAVE , KBC_RST  , CPI_I100 , CPI_D100 , _______  , _______  , _______  ,            _______  , _______  , _______  , _______  , _______  , _______  , _______
   ),
 };
