@@ -56,6 +56,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
+void keyboard_post_init_user() {
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+    set_auto_mouse_layer(2);
+    set_auto_mouse_timeout(650);
+    set_auto_mouse_enable(true);
+#endif
+    // 500CPI
+    keyball_set_cpi(5);
+    keyball_set_scroll_div(7);
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
     // Auto enable scroll mode when the highest layer is 3
     keyball_set_scroll_mode(get_highest_layer(state) == 3);
