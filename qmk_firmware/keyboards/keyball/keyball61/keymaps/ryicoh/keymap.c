@@ -34,6 +34,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F1    , KC_F2    , KC_F3    , KC_F4    , KC_F5    , KC_F6    ,                                  KC_F7    , KC_F8    , KC_F9    , KC_F10   , _______  , KC_BSPC  ,
     KC_ESC   , _______  , _______  , KC_UP    , _______  , _______  ,                                  _______  , KC_BTN4  , KC_BTN3  , KC_BTN5  , _______  , KC_RBRC  ,
     _______  , _______  , KC_LEFT  , KC_DOWN  , KC_RGHT  , _______  ,                                  _______  , KC_BTN1  , SCRL_MO  , KC_BTN2  , _______  , KC_BSLS  ,
+    _______  , _______  , _______  , ________ , ________ , _______  , _______  ,            _______  , _______  , _______  , _______  , _______  , _______  , _______  ,
+    _______  , _______  , _______  , ________ , _______  , _______  , _______  ,               MO(2) , _______  , _______  , _______  , _______  , _______  , _______
+  ),
+
+  [2] = LAYOUT_universal(
+    _______  , _______  , _______  , ________ , _______  , _______  ,                                  _______  , _______  , _______  , _______  , _______  , _______  ,
+    _______  , _______  , _______  , ________ , _______  , _______  ,                                  _______  , _______  , _______  , _______  , _______  , _______  ,
+    _______  , _______  , _______  , ________ , _______  , _______  ,                                  _______  , _______  , _______  , _______  , _______  , _______  ,
     AML_TO   , AML_I50  , AML_D50  , SCRL_DVI , SCRL_DVD , _______  , _______  ,            _______  , _______  , _______  , _______  , _______  , _______  , _______  ,
     KBC_SAVE , KBC_RST  , CPI_I100 , CPI_D100 , _______  , _______  , _______  ,            _______  , _______  , _______  , _______  , _______  , _______  , _______
   ),
@@ -41,11 +49,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 // clang-format on
 
 void keyboard_post_init_user() {
-#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+    // Enable auto mouse
     set_auto_mouse_layer(1);
-    set_auto_mouse_timeout(650);
+    set_auto_mouse_timeout(700);
     set_auto_mouse_enable(true);
-#endif
+
     // 400CPI
     keyball_set_cpi(4);
     keyball_set_scroll_div(6);
