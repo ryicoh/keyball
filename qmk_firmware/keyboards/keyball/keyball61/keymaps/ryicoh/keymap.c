@@ -64,7 +64,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-int base_dpi = 8;
+int base_cpi = 8;
+int low_cpi = 3;
+
+void set_cpi(int cpi) {
+    int cur = keyball_get_cpi();
+    if (cur == cpi) {
+        return;
+    }
+
+    keyball_set_cpi(cpi);
+}
 
 void keyboard_post_init_user() {
     // Enable auto mouse
@@ -72,7 +82,7 @@ void keyboard_post_init_user() {
     set_auto_mouse_timeout(700);
     set_auto_mouse_enable(true);
 
-    keyball_set_cpi(base_dpi);
+    set_cpi(base_cpi);
     keyball_set_scroll_div(6);
 }
 
@@ -80,10 +90,10 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     // マウス2の場合はDIPを下げる
     switch(get_highest_layer(state)) {
         case _MO2:
-            keyball_set_cpi(base_dpi / 3);
+            set_cpi(low_cpi);
             break;
         default:
-            keyball_set_cpi(base_dpi);
+            set_cpi(base_cpi);
             break;
     }
     return state;
