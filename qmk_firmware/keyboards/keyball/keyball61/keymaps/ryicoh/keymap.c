@@ -21,30 +21,40 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "quantum.h"
 
 enum keymap_layers {
-    _BASE,
-    _MOUSE,
-    _SETTING,
+    _BS,  // Base
+    _MO,  // Mouse1
+    _MO2, // Mouse2
+    _SET, // Setting
 };
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [_BASE] = LAYOUT_universal(
+  [_BS] = LAYOUT_universal(
     KC_1     , KC_2     , KC_3     , KC_4     , KC_5     , KC_6     ,                                  KC_7     , KC_8     , KC_9     , KC_0     , KC_MINS  , KC_EQL   , 
     KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R     , KC_T     ,                                  KC_Y     , KC_U     , KC_I     , KC_O     , KC_P     , KC_LBRC  ,
     KC_LCTL  , KC_A     , KC_S     , KC_D     , KC_F     , KC_G     ,                                  KC_H     , KC_J     , KC_K     , KC_L     , KC_SCLN  , KC_QUOT  ,
     KC_LSFT  , KC_GRV   , KC_Z     , KC_X     , KC_C     , KC_V     , KC_B ,                   KC_B  , KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  , KC_BSLS  ,
-    KC_LNG2  , KC_LNG1  , KC_LOPT  , KC_LOPT  , KC_LCMD  , KC_SPC   , MO(_MOUSE),              KC_RBRC , KC_ENT   , _______  , _______  , _______  , KC_RBRC  , KC_BSLS
+    KC_LNG2  , KC_LNG1  , KC_LOPT  , KC_LOPT  , KC_LCMD  , KC_SPC   , MO(_MO),              KC_RBRC , KC_ENT   , _______  , _______  , _______  , KC_RBRC  , KC_BSLS
   ),
 
-  [_MOUSE] = LAYOUT_universal(
+  [_MO] = LAYOUT_universal(
     KC_F1    , KC_F2    , KC_F3    , KC_F4    , KC_F5    , KC_F6    ,                                  KC_F7    , KC_F8    , KC_F9    , KC_F10   , _______  , KC_BSPC  ,
     KC_ESC   , _______  , _______  , KC_UP    , _______  , _______  ,                                  _______  , KC_BTN4  , KC_BTN3  , KC_BTN5  , _______  , KC_RBRC  ,
-    KC_LCTL  , _______  , KC_LEFT  , KC_DOWN  , KC_RGHT  , _______  ,                                  _______  , KC_BTN1  , SCRL_MO  , KC_BTN2  , _______  , KC_BSLS  ,
+    KC_LCTL  , _______  , KC_LEFT  , KC_DOWN  , KC_RGHT  , _______  ,                                  _______  , KC_BTN1  , SCRL_MO  , KC_BTN2  , MO(_MO2) , KC_BSLS  ,
     KC_LCTL  , _______  , _______  , _______  , _______  , _______  , _______  ,            _______  , _______  , _______  , _______  , _______  , _______  , _______  ,
-    _______  , _______  , _______  , _______  , _______  , _______  , _______  ,        MO(_SETTING) , _______  , _______  , _______  , _______  , _______  , _______
+    _______  , _______  , _______  , _______  , _______  , _______  , _______  ,            MO(_SET) , _______  , _______  , _______  , _______  , _______  , _______
   ),
 
-  [_SETTING] = LAYOUT_universal(
+  // マウス2レイヤー (DPIを半分にする)
+  [_MO2] = LAYOUT_universal(
+    KC_F1    , KC_F2    , KC_F3    , KC_F4    , KC_F5    , KC_F6    ,                                  KC_F7    , KC_F8    , KC_F9    , KC_F10   , _______  , KC_BSPC  ,
+    KC_ESC   , _______  , _______  , KC_UP    , _______  , _______  ,                                  _______  , KC_BTN4  , KC_BTN3  , KC_BTN5  , _______  , KC_RBRC  ,
+    KC_LCTL  , _______  , KC_LEFT  , KC_DOWN  , KC_RGHT  , _______  ,                                  _______  , KC_BTN1  , SCRL_MO  , KC_BTN2  , MO(_MO2) , KC_BSLS  ,
+    KC_LCTL  , _______  , _______  , _______  , _______  , _______  , _______  ,            _______  , _______  , _______  , _______  , _______  , _______  , _______  ,
+    _______  , _______  , _______  , _______  , _______  , _______  , _______  ,            MO(_SET) , _______  , _______  , _______  , _______  , _______  , _______
+  ),
+
+  [_SET] = LAYOUT_universal(
     _______  , _______  , _______  , _______  , _______  , _______  ,                                  _______  , _______  , _______  , _______  , _______  , _______  ,
     _______  , _______  , _______  , _______  , _______  , _______  ,                                  _______  , _______  , _______  , _______  , _______  , _______  ,
     _______  , _______  , _______  , _______  , _______  , _______  ,                                  _______  , _______  , _______  , _______  , _______  , _______  ,
@@ -54,20 +64,28 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
+int base_dpi = 8;
+
 void keyboard_post_init_user() {
     // Enable auto mouse
-    set_auto_mouse_layer(_MOUSE);
+    set_auto_mouse_layer(_MO);
     set_auto_mouse_timeout(700);
     set_auto_mouse_enable(true);
 
-    // 400CPI
-    keyball_set_cpi(4);
+    keyball_set_cpi(base_dpi);
     keyball_set_scroll_div(6);
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
-    // Auto enable scroll mode when the highest layer is 3
-    keyball_set_scroll_mode(get_highest_layer(state) == 3);
+    // マウス2の場合はDIPを下げる
+    switch(get_highest_layer(state)) {
+        case _MO2:
+            keyball_set_cpi(base_dpi / 3);
+            break;
+        default:
+            keyball_set_cpi(base_dpi);
+            break;
+    }
     return state;
 }
 
