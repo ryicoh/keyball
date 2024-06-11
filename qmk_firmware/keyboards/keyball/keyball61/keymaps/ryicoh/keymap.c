@@ -86,18 +86,18 @@ void keyboard_post_init_user() {
     keyball_set_scroll_div(6);
 }
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-    // マウス2の場合はDIPを下げる
-    switch(get_highest_layer(state)) {
-        case _MO2:
-            set_cpi(low_cpi);
-            break;
-        default:
-            set_cpi(base_cpi);
-            break;
-    }
-    return state;
-}
+// layer_state_t layer_state_set_user(layer_state_t state) {
+//     // マウス2の場合はDIPを下げる
+//     switch(get_highest_layer(state)) {
+//         case _MO2:
+//             set_cpi(low_cpi);
+//             break;
+//         default:
+//             set_cpi(base_cpi);
+//             break;
+//     }
+//     return state;
+// }
 
 #ifdef OLED_ENABLE
 
