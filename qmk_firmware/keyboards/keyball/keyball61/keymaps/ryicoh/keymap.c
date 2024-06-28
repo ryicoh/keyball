@@ -23,7 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 enum keymap_layers {
     _BS,  // Base
     _MO,  // Mouse1
-    _MO2, // Mouse2
     _SET, // Setting
 };
 
@@ -40,18 +39,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_MO] = LAYOUT_universal(
     KC_ESC   , KC_F1    , KC_F2    , KC_F3    , KC_F4    , KC_F5    ,                                  KC_F6    , KC_F7    , KC_F8    , KC_F9    , KC_F10   , KC_BSPC  ,
     _______  , _______  , _______  , KC_UP    , _______  , _______  ,                                  KC_BTN3  , KC_BTN4  , KC_BTN2  , KC_BTN5  , _______  , _______  ,
-    _______  , _______  , KC_LEFT  , KC_DOWN  , KC_RGHT  , _______  ,                                  _______  , KC_BTN1  , SCRL_MO  , _______  , MO(_MO2) , _______  ,
+    _______  , _______  , KC_LEFT  , KC_DOWN  , KC_RGHT  , _______  ,                                  _______  , KC_BTN1  , SCRL_MO  , _______  , _______  , _______  ,
     _______  , _______  , _______  , _______  , _______  , _______  , _______  ,            _______  , _______  , _______  , _______  , _______  , _______  , _______  ,
-    _______  , _______  , _______  , _______  , _______  , _______  , _______  ,            MO(_SET) , _______  , _______  , _______  , _______  , _______  , _______
-  ),
-
-  // マウス2レイヤー (DPIを半分にする)
-  [_MO2] = LAYOUT_universal(
-    KC_F1    , KC_F2    , KC_F3    , KC_F4    , KC_F5    , KC_F6    ,                                  KC_F7    , KC_F8    , KC_F9    , KC_F10   , _______  , _______  ,
-    _______  , _______  , _______  , KC_UP    , _______  , _______  ,                                  KC_BTN3  , KC_BTN4  , KC_BTN2  , KC_BTN5  , _______  , _______  ,
-    _______  , _______  , KC_LEFT  , KC_DOWN  , KC_RGHT  , _______  ,                                  _______  , KC_BTN1  , SCRL_MO  , _______  , MO(_MO2) , _______  ,
-    _______  , _______  , _______  , _______  , _______  , _______  , _______  ,            _______  , _______  , _______  , _______  , _______  , _______  , _______  ,
-    _______  , _______  , _______  , _______  , _______  , _______  , _______  ,            MO(_SET) , _______  , _______  , _______  , _______  , _______  , _______
+    _______  , _______  , _______  , _______  , _______  , _______  , KC_BTN1  ,            MO(_SET) , _______  , _______  , _______  , _______  , _______  , _______
   ),
 
   [_SET] = LAYOUT_universal(
@@ -85,19 +75,6 @@ void keyboard_post_init_user() {
     set_cpi(base_cpi);
     keyball_set_scroll_div(6);
 }
-
-// layer_state_t layer_state_set_user(layer_state_t state) {
-//     // マウス2の場合はDIPを下げる
-//     switch(get_highest_layer(state)) {
-//         case _MO2:
-//             set_cpi(low_cpi);
-//             break;
-//         default:
-//             set_cpi(base_cpi);
-//             break;
-//     }
-//     return state;
-// }
 
 #ifdef OLED_ENABLE
 
